@@ -1,38 +1,38 @@
 import requests
 from bs4 import BeautifulSoup as bs
 from datetime import datetime, timedelta
-from listings.validators import parse_date
+from dateutil.parser import parse
 
 
-def get_url(url) -> str:
+def get_url(url: str) -> str:
     html = requests.get(url=url).text
     return html
 
+def parse_date(date_str: str) -> tuple:
+    try:
+        dt = parse(date_str, fuzzy=True)
+        return dt.year, dt.month, dt.day
+    except:
+        return None
+
 def get_info() -> list:
-    html = get_url(url="https://coinmarketcap.com/upcoming/")
+    html = get_url("https://icoanalytics.org/token-generation-events/")
     soup = bs(html, "lxml")
 
-    rows = soup.select("tbody tr")
+    names = [n.text.strip() for n in soup.select("h5.cointitle")]
 
-    coins = []
+    dates = [d.text.strip() for d in soup.select("div.hpt-col3")[1:]]
 
-    for row in rows:
-        link_tag = row.select_one("a[href]")
-        if not link_tag:
-            continue
+    links = [a["href"] for a in soup.select("a.t-project-link")]
 
-        name = link_tag.text.strip()
-        href = link_tag["href"].strip()
-        full_link = "https://coinmarketcap.com" + href
+    result = []
+    for i in range(len(names)):
+        name = names[i] if i < len(names) else ""
+        date_str = dates[i] if i < len(dates) else ""
+        link = links[i] if i < len(links) else ""
+        result.append((name, link, date_str))
 
-        tds = row.select("td")
-        if len(tds) >= 3:
-            first_listing = tds[2].text.strip()
-        else:
-            first_listing = "N/A"
-
-        coins.append((name, full_link, first_listing))
-    return coins
+    return result
 
 def print_coin():
     coins = get_info()
@@ -46,12 +46,7 @@ def print_coin():
         if not parsed:
             continue
 
-        year, month = parsed[0], parsed[1] if len(parsed) > 1 else None
-        day = parsed[2] if len(parsed) > 2 else 1
-
-        if not month:
-            continue
-
+        year, month, day = parsed
         listing_date = datetime(year, month, day)
 
         if today <= listing_date <= week_later:

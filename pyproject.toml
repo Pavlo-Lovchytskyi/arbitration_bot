@@ -12,6 +12,8 @@ requests = "^2.32.5"
 bs4 = "^0.0.2"
 lxml = "^6.0.2"
 python-dotenv = "^1.2.1"
+telethon = "^1.42.0"
+python-dateutil = "^2.9.0.post0"
 
 
 [build-system]
