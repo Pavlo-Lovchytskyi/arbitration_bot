@@ -64,7 +64,7 @@ async def monitor_claim(message: Message, network: str, address: str):
                 break
 
             if result is True:
-                await message.answer(f"✅ Transfer найден! Контракт {address}, сеть {network.upper()}.")
+                await message.answer(f"✅ Claim найден! Контракт {address}, сеть {network.upper()}.")
                 break
 
             await asyncio.sleep(5)
