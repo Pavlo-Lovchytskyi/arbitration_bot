@@ -31,7 +31,7 @@ async def claim_command(message: Message):
     task = asyncio.create_task(monitor_claim(message, network, address))
     active_claims[message.from_user.id] = task
 
-@dp.message(Command("stop_claim"))
+@dp.message(Command("stopclaim"))
 async def stop_claim_command(message: Message):
     task = active_claims.get(message.from_user.id)
     if task and not task.done():

@@ -5,6 +5,24 @@ from aiogram.types import Message
 from bs4 import BeautifulSoup as bs
 
 
+CLAIM_METHODS = [
+    "claim",
+    "claimtoken",
+    "claimtokens",
+    "claimairdrop",
+    "claimreward",
+    "claimrewards",
+    "withdraw",
+    "withdrawtokens",
+    "release",
+    "unlock",
+    "harvest",
+    "redeem",
+    "getreward",
+    "mint",
+    "airdrop"
+]
+
 active_claims = {}
 
 async def check_claim(network: str, address: str):
@@ -41,8 +59,10 @@ async def check_claim(network: str, address: str):
         return False
 
     for r in rows:
-        if "claim" in r.text.lower():
+        text = r.text.lower()
+        if any(m in text for m in CLAIM_METHODS):
             return True
+
 
     return False
 
