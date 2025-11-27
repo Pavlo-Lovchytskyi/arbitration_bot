@@ -41,7 +41,7 @@ async def check_claim(network: str, address: str):
         return False
 
     for r in rows:
-        if "approve" in r.text.lower():
+        if "claim" in r.text.lower():
             return True
 
     return False
