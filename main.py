@@ -45,7 +45,9 @@ async def run(message: Message) -> None:
 
 @dp.message(Command("help"))
 async def help (message: Message) -> None:
-    await message.answer("/listings - listings on coin market cup service.\n /claim {сеть} {адрес} - запускает мониторинг метода клейм в выбраной сети и по контракту")
+    await message.answer("/listings - листинги с сервиса icoanalytics.org.\n "
+                         "/claim {сеть} {адрес} - запускает мониторинг метода клейм в выбраной сети и по контракту.\n " \
+                         "/stopclaim - останавливает поиск.")
 
 async def run_bot() -> None:
     bot = Bot(token=TOKEN)
