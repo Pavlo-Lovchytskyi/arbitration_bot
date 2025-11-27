@@ -1,4 +1,5 @@
 import requests
+
 from bs4 import BeautifulSoup as bs
 from datetime import datetime, timedelta
 from dateutil.parser import parse
